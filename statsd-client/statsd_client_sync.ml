@@ -1,5 +1,5 @@
 include Statsd_client_core.Config
-include Statsd_client_core.Make (
+module IO =
   struct
     let ipaddr () = !Statsd_client_core.Config.ipaddr
     let port () = !Statsd_client_core.Config.port
@@ -14,4 +14,6 @@ include Statsd_client_core.Make (
     let sendto = sendto_substring
     let socket dom typ proto = Unix.socket dom typ proto
   end
-)
+include Statsd_client_core.Make (IO)
+
+module Dogstatsd = Dogstatsd.Make(IO)
